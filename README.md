@@ -7,18 +7,18 @@ This repository contains Python code to implement simulations and evaluations fo
 A. Wunderlich, "Extreme Value Theory for Peak Power in Discrete-Time Complex Gaussian Processes", preprint 2026.  
 
 ## Getting Started
-Create a Conda environment using the command ```conda env create -f environment.yml```.  
+The Conda environment used to run the code can be recreated with the command ```conda env create -f environment.yml```.  
 
-Three scripts can be used to reproduce the plots in the paper:
+There are three scripts:
 
 - ``monte_carlo_simulations.py`` 
-  - Monte Carlo simulations of peak-to-average power (PAPR) distributions for filtered complex white Gaussian noise.  Saves a .json data file.
+  - Monte Carlo simulations of peak-to-average power (PAPR) distributions for filtered complex white Gaussian noise.  Saves a ``.json`` data file.
 
 - ``eval_W1_dists.py`` 
-  - Compute Wasserstein-1 (W1) distances between empirical PAPR distribution and analytical models.  Loads precomputed .json file and adds W1 distances.  
+  - Compute Wasserstein-1 (W1) distances between empirical PAPR distribution and analytical models.  Loads precomputed ``.json`` file and adds W1 distances.  
 
 - ``make_plots.py`` 
-  - Reproduce plots provided in the above paper.  Loads precomputed .json file.
+  - Reproduce plots provided in the above paper.  Loads precomputed ``.json`` file.
  
   The data\ directory contains the ``.json`` data files corresponding to the figures in the paper.  
 
