@@ -7,7 +7,7 @@ This repository contains Python code to implement simulations and evaluations fo
 A. Wunderlich, "Extreme Value Theory for Peak Power in Discrete-Time Complex Gaussian Processes", preprint 2026.  
 
 ## Getting Started
-The Conda environment used to run the code can be recreated with the command ```conda env create -f environment.yml```.  
+The Conda environment used to run the code can be recreated with the command ``conda env create -f environment.yml``.  
 
 The data\ directory contains the ``.json`` data files corresponding Monte Carlo simulations presented in the paper.  
 
