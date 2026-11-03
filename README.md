@@ -1,2 +1,16 @@
-# cg-papr
-Code to implement simulations and models for peak power distributions of discrete-time complex gaussian processes
+# <u>**cg-papr: Simulations and Models for Peak Power Distributions of Discrete-Time Complex Gaussian Processes**</u>
+
+## Overview
+This repository contains Python code to implement simulations and evaluations for peak power distributions of discrete-time Complex Gaussian processes.
+
+## Reference
+A. Wunderlich, "Extreme Value Theory for Peak Power in Discrete-Time Complex Gaussian Processes", 2026.  
+
+## Getting Started
+Create a Conda environment using the command ```conda env create -f environment.yml```.  
+
+Three scripts can be used to reproduce the plots in the above paper:
+``monte_carlo_simulations.py`` - Monte Carlo simulations of peak-to-average power (PAPR) distributions for filtered complex white Gaussian noise. 
+``eval_W1_dists.py`` - Compute Wasserstein-1 distances between empirical PAPR distribution and analytical models.
+``make_plots.py`` - Makes and saves plots provided in the above paper.  
+
