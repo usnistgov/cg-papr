@@ -9,9 +9,9 @@ A. Wunderlich, "Extreme Value Theory for Peak Power in Discrete-Time Complex Gau
 ## Getting Started
 The Python environment used to run the code can be recreated with the command ``conda env create -f environment.yml``.  
 
-The data\ directory contains ``.json`` data files corresponding Monte Carlo simulations presented in the paper.  
+The ``data\`` directory contains ``.json`` data files corresponding Monte Carlo simulations presented in the paper.  
 
-There are three scripts:
+The ``src\`` directory contains source code, including three scripts:
 
 - ``monte_carlo_simulations.py`` 
   - Monte Carlo simulations of peak-to-average power (PAPR) distributions for filtered complex white Gaussian noise.  Saves a ``.json`` data file like those in ``data\``.  
