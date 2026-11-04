@@ -9,7 +9,7 @@ A. Wunderlich, "Extreme Value Theory for Peak Power in Discrete-Time Complex Gau
 ## Getting Started
 The Python environment used to run the code can be recreated with the command ``conda env create -f environment.yml``.  
 
-The ``data\`` directory contains ``.json`` data files corresponding Monte Carlo simulations presented in the paper.  
+The ``data\`` directory contains ``.json`` data files corresponding to the Monte Carlo simulations presented in the paper.  
 
 The ``src\`` directory contains source code, including three scripts:
 
