@@ -4,7 +4,7 @@
 This repository contains Python code to implement simulations and evaluations for peak power distributions of discrete-time Complex Gaussian processes presented in the paper cited below.  
 
 ## Reference
-A. Wunderlich, "Extreme Value Theory for Peak Power in Discrete-Time Complex Gaussian Processes", preprint 2026.  
+A. Wunderlich, "Extreme Value Theory for Peak Power in Discrete-Time Complex Gaussian Processes", arXiv preprint, 2026.  
 
 ## Getting Started
 The Python environment used to run the code can be recreated with the command ``conda env create -f environment.yml``.  
