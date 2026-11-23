@@ -4,7 +4,7 @@ Script to calculate W1 distances for evaluations in the paper
 "Extreme Value Theory for Peak Power in Discrete-Time Complex Gaussian Processes"
 
 author: Adam Wunderlich
-last update: 10/28/2026
+last update: 11/18/2026
 """
 
 import numpy as np
@@ -38,7 +38,8 @@ def main():
                 scenario = data_dict['scenario'] = scenario
                 n = np.asarray(data_dict['n'])
                 num_MC = data_dict['num_MC'] 
-                OSR = np.asarray(data_dict['OSR'])
+                OSR_L = np.asarray(data_dict['OSR_L'])
+                OSR_N = np.asarray(data_dict['OSR_N'])
                 B1 = np.asarray(data_dict['B1'])
                 B2 = np.asarray(data_dict['B2'])
                 fc1 = np.asarray(data_dict['fc1'])
@@ -48,7 +49,7 @@ def main():
                 pass
             
     print('computing performance metrics')
-    num_filters = len(OSR)
+    num_filters = len(OSR_L)
     W1_iid = np.zeros((num_filters,len(n)))
     W1_iid_CI = np.zeros((num_filters,len(n),2))    
     W1_CT = np.zeros((num_filters,len(n)))

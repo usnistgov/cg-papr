@@ -4,7 +4,7 @@ Monte Carlo simulation script for evaluations in the paper
 "Extreme Value Theory for Peak Power in Discrete-Time Complex Gaussian Processes"
 
 author: Adam Wunderlich
-last update: 10/28/2026
+last update: 11/18/2026
 
 """
 
@@ -183,37 +183,32 @@ def main():
 
     if scenario == 'single-band_symmetric':
         symmetric = True
-        OSR = np.array([2, 4, 8, 16]) # oversampling ratio
-        B = 1/(2*OSR) # half-bandwidth
+        OSR_L = np.array([1.25, 2, 4, 8]) # Landau oversampling ratio
+        OSR_N = np.array([1.25, 2, 4, 8]) # Nyquist oversampling ratio
+        B = 1/(2*OSR_L) # half-bandwidth
         B1 = 2*B
-        B2 = np.zeros(len(OSR))
-        fc1 = np.zeros(len(OSR))
-        fc2 = np.zeros(len(OSR))
+        B2 = np.zeros(len(OSR_L))
+        fc1 = np.zeros(len(OSR_L))
+        fc2 = np.zeros(len(OSR_L))
     elif scenario == 'dual-band_symmetric':
         symmetric = True
-        OSR = np.array([2, 4, 8, 16]) # oversampling ratio
-        B = 1/(2*OSR)  # half-bandwidth
+        OSR_L = np.array([2, 4, 8, 16])
+        OSR_N = np.ones(4)*1.25
+        B = 1/(2*OSR_L)  # half-bandwidth
         B1 = B
         B2 = B
-        fc1 = -0.2*np.ones(len(OSR))
-        delta_fc = 0.4  # offset between band center frequencies
-        fc2 = fc1 + delta_fc
+        fc = 1/(2*OSR_N) - B/2
+        fc1 = -fc
+        fc2 = fc
     elif scenario =='dual-band_asymmetric':
         symmetric = False
         B1 = np.ones(4)*1/24
         B2 = np.ones(4)*1/48
-        OSR = 1/(B1+B2)
-        delta_f = 0.125*np.array([1,2,3,4]) # spacing between fc1 and fc2
+        OSR_L= 1/(B1+B2)
+        OSR_N = np.array([1.25, 2, 4, 8])
         fc1 = -0.3*np.ones(4)
+        delta_f = 1/OSR_N - (B1+B2)/2
         fc2 = fc1 + delta_f
-    elif scenario == 'single-band_asymmetric':
-        symmetric = False
-        OSR = 16*np.ones(4) # oversampling ratio
-        B = 1/(2*OSR) # half-bandwidth
-        B1 = 2*B
-        B2 = np.zeros(len(OSR))
-        fc1 = np.array([0.1, 0.2, 0.3, 0.4])
-        fc2 = np.zeros(len(OSR))
 
 
     n  = np.array([1e3, 3e3, 1e4, 3e4, 1e5, 3e5, 1e6]) # sample size
@@ -222,7 +217,8 @@ def main():
     data_dict['n'] = n
     data_dict['num_MC'] = num_MC
     data_dict['symmetric'] = symmetric
-    data_dict['OSR'] = OSR
+    data_dict['OSR_L'] = OSR_L
+    data_dict['OSR_N'] = OSR_N
     data_dict['B1'] = B1
     data_dict['B2'] = B2
     data_dict['fc1'] = fc1
@@ -230,7 +226,7 @@ def main():
 
 
     # Monte Carlo simulation
-    num_filters = len(OSR)
+    num_filters = len(OSR_L)
     PAPR_MC = np.zeros((num_filters, len(n), num_MC))
     t_start = time.time()
     filter_order = 64

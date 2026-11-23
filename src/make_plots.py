@@ -4,7 +4,7 @@ Script for plots in the paper
 "Extreme Value Theory for Peak Power in Discrete-Time Complex Gaussian Processes"
 
 author: Adam Wunderlich
-last update: 10/28/2026
+last update: 11/19/2026
 """
 
 import json
@@ -46,7 +46,8 @@ def main():
                 symmetric = data_dict['symmetric']
                 n = np.asarray(data_dict['n'])
                 num_MC = data_dict['num_MC'] 
-                OSR = np.asarray(data_dict['OSR'])
+                OSR_L = np.asarray(data_dict['OSR_L'])
+                OSR_N = np.asarray(data_dict['OSR_N'])
                 B1 = np.asarray(data_dict['B1'])
                 B2 = np.asarray(data_dict['B2'])
                 fc1 = np.asarray(data_dict['fc1'])
@@ -58,7 +59,7 @@ def main():
             except Exception:
                 pass
    
-    num_filters = len(OSR)
+    num_filters = len(OSR_L)
     
     # plots
     fig1, ax = plt.subplots(2, 2, figsize = (8,6), sharex=True, sharey=True)
@@ -72,20 +73,11 @@ def main():
         ax_flat[ax_ind].set_xscale('log')
         ax_flat[ax_ind].tick_params(axis='both', which='major', labelsize=14)
         ax_flat[ax_ind].tick_params(axis='both', which='minor', labelsize=14)
-        if symmetric:
-            ax_flat[ax_ind].set_title(f'OSR = {OSR[ax_ind]:g}', fontsize=16)
-        else:
-            delta_f = fc2[ax_ind]-fc1[ax_ind]
-            OSR = 1/(B1[ax_ind]+B2[ax_ind])
-            ax_flat[ax_ind].set_title(rf'$\Delta f_c = ${delta_f}, OSR = {OSR:g}', fontsize=16)
+        ax_flat[ax_ind].set_title(rf'$\mathrm{{OSR}}_N = ${OSR_N[ax_ind]:g}, $\mathrm{{OSR}}_L = ${OSR_L[ax_ind]:g}', fontsize=16)
     ax_flat[0].set_ylabel('$W_1$ (dB)', fontsize = 16)
     ax_flat[1].legend(loc='best', ncol=1, fontsize = 12)
-    if symmetric:
-        ax_flat[0].set_ylim(-0.1,1.5)
-        ax_flat[0].set_yticks([0,.25, .5, .75, 1, 1.25, 1.5])
-    else:
-        ax_flat[0].set_ylim(-0.1,1.75)
-        ax_flat[0].set_yticks([0,.25, .5, .75, 1, 1.25, 1.5, 1.75])
+    ax_flat[0].set_ylim(-0.1,1.65)
+    ax_flat[0].set_yticks([0,.25, .5, .75, 1, 1.25, 1.5])
     ax_flat[2].set_ylabel('$W_1$ (dB)', fontsize = 16)
     ax_flat[2].set_xlabel('Number of Samples', fontsize = 16)
     ax_flat[3].set_xlabel('Number of Samples', fontsize = 16)
@@ -120,11 +112,7 @@ def main():
         ax[ax_ind].set_xlabel('PAPR (dB)', fontsize = 16)       
         ax[ax_ind].tick_params(axis='both', which='major', labelsize=16)
         ax[ax_ind].tick_params(axis='both', which='minor', labelsize=16)
-        if symmetric:
-            ax[ax_ind].set_title(f'OSR = {OSR[i]:g}', fontsize = 16)
-        else:          
-            delta_fc = fc2[i] - fc1[i]
-            ax[ax_ind].set_title(rf'$\Delta f_c = ${delta_fc}, OSR = {OSR:g}', fontsize=16)
+        ax[ax_ind].set_title(rf'$\mathrm{{OSR}}_N = ${OSR_N[i]:g}, $\mathrm{{OSR}}_L = ${OSR_L[i]:g}', fontsize=16)
         
     ax[0].set_ylabel('Probability Density', fontsize = 16)
     ax[0].legend(loc='best', fontsize = 11)
@@ -167,11 +155,7 @@ def main():
             ax_flat[i].set_ylabel('Filter Gain (dB)', fontsize = 16)
         ax_flat[i].tick_params(axis='both', which='major', labelsize=14)
         ax_flat[i].tick_params(axis='both', which='minor', labelsize=14)
-        if symmetric:
-            ax_flat[i].set_title(f'OSR = {OSR[i]:g}', fontsize=16)
-        else:
-            delta_fc = fc2[i] - fc1[i]
-            ax_flat[i].set_title(rf'$\Delta f_c = ${delta_fc}, OSR = {OSR:g}', fontsize=16)
+        ax_flat[i].set_title(rf'$\mathrm{{OSR}}_N = ${OSR_N[i]:g}, $\mathrm{{OSR}}_L = ${OSR_L[i]:g}', fontsize=16)
         fig3.tight_layout()
         fig3.savefig(scenario + '_filter_responses.png', dpi=400)
 
@@ -180,7 +164,7 @@ def main():
         # teaser plots
         i = 1 # index for filter number
         k = 2 # index for n
-        fig4, ax4 = plt.subplots(1, 1, figsize = (6,4), sharey = True)
+        fig4, ax4 = plt.subplots(1, 1, figsize = (6,4.5), sharey = True)
         sos1_real = np.asarray(data_dict[f'filt{i}_sos1_real'])
         sos1_imag = np.asarray(data_dict[f'filt{i}_sos1_imag']) 
         sos1 = sos1_real + 1j*sos1_imag
@@ -206,7 +190,7 @@ def main():
         fig4.tight_layout()
         fig4.savefig(scenario + '_teaser_filter_response.png', dpi=400)
         
-        fig5, ax5 = plt.subplots(1, 1, figsize = (6,5))
+        fig5, ax5 = plt.subplots(1, 1, figsize = (6,4.5))
         papr_grid_dB = np.linspace(7, 12, 500)
         PAPR_sample_dB = 10*np.log10(PAPR_MC[i,k,:]) # CDFs are on dB scale
         kernel = gaussian_kde(PAPR_sample_dB)
@@ -233,7 +217,6 @@ def main():
         fig5.savefig(scenario+'_teaser_pdf'+'.png', dpi=400)
 
         # example non-monotonic ACF magnitude
-        i = 3 # index for filter number
         Rzz_length = 10
         Rzz = np.ones(Rzz_length, dtype=complex)
         def sinc(x):
